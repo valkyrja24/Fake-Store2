@@ -1,10 +1,24 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import useAuth from '../hooks/useAuth';
+import useCart from '../hooks/useCart';
 import AuthDialog from './AuthDialog';
 
 const UserProfile = () => {
   const { user, logout, isAuthenticated } = useAuth();
+  const { mergeGuestCart } = useCart();
   const authDialogRef = useRef(null);
+  
+  const handleLoginSuccess = () => {
+    if (isAuthenticated) {
+      mergeGuestCart();
+    }
+  };
+  
+  useEffect(() => {
+    if (isAuthenticated) {
+      mergeGuestCart();
+    }
+  }, [isAuthenticated]);
   
   const handleLoginClick = () => {
     if (authDialogRef.current) {
@@ -43,7 +57,7 @@ const UserProfile = () => {
           >
             Sign In
           </button>
-          <AuthDialog ref={authDialogRef} />
+          <AuthDialog ref={authDialogRef} onLoginSuccess={handleLoginSuccess} />
         </>
       )}
     </div>
