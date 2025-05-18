@@ -1,7 +1,7 @@
 import React, { useState, useRef, forwardRef, useImperativeHandle } from 'react';
 import useAuth from '../hooks/useAuth';
 
-const AuthDialog = forwardRef(({ onLoginSuccess }, ref) => {
+const AuthDialog = forwardRef(({ onLoginSuccess, onClose }, ref) => {
   const dialogRef = useRef(null);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -36,6 +36,8 @@ const AuthDialog = forwardRef(({ onLoginSuccess }, ref) => {
     setUsername('');
     setPassword('');
     setErrorMessage('');
+    
+    if (onClose) onClose();
   };
 
   useImperativeHandle(ref, () => ({

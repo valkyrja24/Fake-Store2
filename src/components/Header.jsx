@@ -39,6 +39,11 @@ const Header = () => {
               </Link>
             </li>
             <li>
+              <Link to="/help" style={{ color: '#333', textDecoration: 'none' }}>
+                Help
+              </Link>
+            </li>
+            <li>
               <UserProfile />
             </li>
             <li>

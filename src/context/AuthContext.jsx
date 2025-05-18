@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect } from 'react';
 
 export const AuthContext = createContext();
 
@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [authInitialized, setAuthInitialized] = useState(false);
 
   useEffect(() => {
     const storedToken = localStorage.getItem('authToken');
@@ -16,6 +17,9 @@ export const AuthProvider = ({ children }) => {
       setToken(storedToken);
       setUser(JSON.parse(storedUser));
     }
+    
+    // Mark auth as initialized after checking localStorage
+    setAuthInitialized(true);
   }, []);
 
   const login = async (username, password) => {
@@ -82,6 +86,7 @@ export const AuthProvider = ({ children }) => {
         isLoading,
         error,
         isAuthenticated,
+        authInitialized
       }}
     >
       {children}

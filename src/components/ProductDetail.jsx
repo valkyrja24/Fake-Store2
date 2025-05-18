@@ -14,8 +14,12 @@ const ProductDetail = () => {
   const { isAuthenticated } = useAuth();
   const authDialogRef = useRef(null);
   
+  const [pendingCartItem, setPendingCartItem] = useState(null);
+  
   const handleAddToCart = () => {
     if (!isAuthenticated) {
+      setPendingCartItem({ product, quantity });
+      
       if (authDialogRef.current) {
         authDialogRef.current.openDialog();
       }
@@ -31,9 +35,10 @@ const ProductDetail = () => {
   };
   
   const handleAuthSuccess = () => {
-    if (product) {
-      addToCart(product, quantity);
+    if (pendingCartItem) {
+      addToCart(pendingCartItem.product, pendingCartItem.quantity);
       setQuantity(1);
+      setPendingCartItem(null);
     }
   };
   
@@ -95,7 +100,10 @@ const ProductDetail = () => {
         </button>
       </div>
       
-      <AuthDialog ref={authDialogRef} onLoginSuccess={handleAuthSuccess} />
+      <AuthDialog 
+        ref={authDialogRef} 
+        onLoginSuccess={handleAuthSuccess} 
+      />
     </div>
   );
 };
